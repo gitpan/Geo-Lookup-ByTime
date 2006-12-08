@@ -8,7 +8,7 @@ use base qw(Exporter);
 
 our @EXPORT_OK = qw(hav_distance);
 
-use version; our $VERSION = qv('0.0.1');
+use version; our $VERSION = qv('0.0.2');
 
 my $EARTH_RADIUS = 6378137.0;
 my $PI           = 4 * atan2(1, 1);
@@ -49,6 +49,11 @@ sub add_points {
             my @pts = ( );
             while (my $ipt = $pt->()) {
                 push @pts, $ipt;
+                if (@pts >= 100) {
+                    # Add points 100 at a time.
+                    $self->add_points(@pts);
+                    @pts = ( );
+                }
             }
             $self->add_points(@pts);
         } elsif (ref($pt) eq 'ARRAY') {
@@ -58,7 +63,8 @@ sub add_points {
                 unless exists($pt->{lat}) && exists($pt->{lon}) && exists($pt->{time});
             push @{$self->{points}}, $pt;
         } else {
-            croak("Don't know how to add " . ($pt ? $pt : '(undef)'));
+            croak("Don't know how to add " 
+                . (defined($pt) ? $pt : '(undef)'));
         }
     }
 }
@@ -227,19 +233,21 @@ Geo::Lookup::ByTime - Lookup location by time
 
 =head1 VERSION
 
-This document describes Geo::Lookup::ByTime version 0.0.1
+This document describes Geo::Lookup::ByTime version 0.0.2
 
 =head1 SYNOPSIS
 
     use Geo::Lookup::ByTime;
     
-    $lookup = Geo::Lookup::ByTime->new( [ points ] );
+    $lookup = Geo::Lookup::ByTime->new( @points );
     my $pt = $lookup->nearest( $tm );
 
 =head1 DESCRIPTION
 
-Given a set of timestamped locations guess the location at a
-particular time.
+Given a set of timestamped locations guess the location at a particular
+time. This is a useful operation for, e.g., adding location information
+to pictures based on their timestamp and a GPS trace that covers the
+same time period.
 
 =head1 INTERFACE 
 
@@ -277,6 +285,12 @@ position will be calculated for any point that lies within the range of
 time covered by the reference points. Optionally C<$max_dist> may
 be specified in which case C<undef> will be returned if the closest
 real point is more than that many metres away from the computed point.
+
+If the requested time coincides exactly with the timestamp of one
+of the points the returned point will be at the same location as
+the matching point. If the time falls between the timestamps of
+two points the returned point will be linearly interpolated from
+those two points.
 
 In an array context returns a list containing the synthetic point
 at the specified time (i.e. the value that would be returned in
