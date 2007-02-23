@@ -8,9 +8,9 @@ use base qw(Exporter);
 
 our @EXPORT_OK = qw(hav_distance);
 
-use version; our $VERSION = qv('0.0.2');
+use version; our $VERSION = qv('0.0.3');
 
-my $EARTH_RADIUS = 6378137.0;
+my $EARTH_RADIUS = 6_378_137.0;
 my $PI           = 4 * atan2(1, 1);
 my $DEG_TO_RAD   = $PI / 180.0;
 my $RAD_TO_DEG   = 180.0 / $PI;
@@ -67,6 +67,8 @@ sub add_points {
                 . (defined($pt) ? $pt : '(undef)'));
         }
     }
+
+    return;
 }
 
 sub get_points {
@@ -190,7 +192,7 @@ sub _rad {
 # From
 #  http://perldoc.perl.org/functions/sin.html
 sub _asin {
-    atan2($_[0], sqrt(1 - $_[0] * $_[0]))
+    return atan2($_[0], sqrt(1 - $_[0] * $_[0]))
 }
 
 # Not a method
@@ -233,7 +235,7 @@ Geo::Lookup::ByTime - Lookup location by time
 
 =head1 VERSION
 
-This document describes Geo::Lookup::ByTime version 0.0.2
+This document describes Geo::Lookup::ByTime version 0.0.3
 
 =head1 SYNOPSIS
 

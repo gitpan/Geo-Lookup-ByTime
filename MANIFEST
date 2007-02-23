@@ -1,10 +1,9 @@
 Build.PL
 Changes
-MANIFEST
-META.yml # Will be created by "make dist"
-Makefile.PL
-README
 lib/Geo/Lookup/ByTime.pm
+Makefile.PL
+MANIFEST
+README
 t/00.load.t
 t/01.add-points.t
 t/02.hav-dist.t
@@ -12,3 +11,5 @@ t/03.nearest.t
 t/04.misc.t
 t/pod-coverage.t
 t/pod.t
+META.yml                                 Module meta-data (added by MakeMaker)
+SIGNATURE                                Public-key signature (added by MakeMaker)
