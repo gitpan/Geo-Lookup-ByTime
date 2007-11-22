@@ -1,13 +1,12 @@
 --- #YAML:1.0
 name:                Geo-Lookup-ByTime
-version:             v0.0.3
+version:             0.10
 abstract:            Lookup location by time
 license:             perl
-generated_by:        ExtUtils::MakeMaker version 6.32
+generated_by:        ExtUtils::MakeMaker version 6.36_01
 distribution_type:   module
 requires:     
     Test::More:                    0
-    version:                       0
 meta-spec:
     url:     http://module-build.sourceforge.net/META-spec-v1.2.html
     version: 1.2
